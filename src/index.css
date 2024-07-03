@@ -1,0 +1,17 @@
+/* Add this at the top of your CSS file */
+@import url("https://fonts.googleapis.com/css2?family=Covered+By+Your+Grace&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Monrope:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+body{
+  
+    font-family: 'Raleway', serif;
+}
