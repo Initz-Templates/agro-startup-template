@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setBillingDetails } from "../features/billingSlice";
 import { toast } from "react-toastify";
 import { clearCart } from "../features/cartSlice";
+import pageHeaderBg from "../assets/title.png";
 
 const Checkout = () => {
     const [dropdownValue, setDropdownValue] = useState('');
@@ -90,7 +91,7 @@ const Checkout = () => {
 
     return (
         <div>
-            <div style={{ backgroundImage: `url('https://i.ibb.co/rybD1fm/title.png')`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', height: '300px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <div style={{ backgroundImage: `url(${pageHeaderBg})`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', height: '300px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <div>
                     <p className="text-center text-white opacity-75">
                         <Link to='/' className='hover:text-[#49A760] transform duration-300'>Home</Link> / Checkout

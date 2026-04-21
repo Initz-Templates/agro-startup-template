@@ -7,6 +7,7 @@ import { Box, TextField } from '@mui/material';
 import { toast } from 'react-toastify';
 import { FaSpinner } from 'react-icons/fa';
 import { IoPaperPlaneOutline } from 'react-icons/io5'; // Changed import to IoPaperPlaneOutline for the paper plane icon
+import pageHeaderBg from '../../assets/title.png';
 
 const Service_details = () => {
     const { id } = useParams();
@@ -75,7 +76,7 @@ const Service_details = () => {
     };
 
     const divStyle = {
-        backgroundImage: `url('https://i.ibb.co/rybD1fm/title.png')`,
+        backgroundImage: `url(${pageHeaderBg})`,
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',

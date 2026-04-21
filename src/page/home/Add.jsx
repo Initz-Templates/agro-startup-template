@@ -6,6 +6,9 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { addToCart } from "../../features/cartSlice";
 import 'react-toastify/dist/ReactToastify.css';
+import promoFruit from '../../assets/14.png.png';
+import moneyReturnIcon from '../../assets/item-26.png';
+import memberDiscountIcon from '../../assets/item-27.png';
 
 const Add = () => {
     const [discountProducts, setDiscountProducts] = useState([]);
@@ -54,7 +57,7 @@ const Add = () => {
                         <div className="p-5 my-14 flex flex-col justify-center items-center">
                             <div>
                                 <h1 className="text-white text-3xl uppercase font-semibold text-center">Organic <br /> Fresh Fruit</h1>
-                                <img className="w-52 my-5" src="https://i.ibb.co/NmtWv27/14-png.png" alt="" />
+                                <img className="w-52 my-5" src={promoFruit} alt="" />
                                 <div className="flex flex-col justify-center items-center hover:scale-105 transform duration-300">
                                     <Link to="/products">
                                     <button className="bg-[#EEC044] flex text-[14px] items-center gap-1 hover:bg-[#ffcb3a] transform duration-300 py-2 px-8 rounded font-semibold">
@@ -71,7 +74,7 @@ const Add = () => {
                         <div className="flex items-center lg:justify-start justify-center gap-5">
                             <div className="flex items-center gap-3">
                                 <div>
-                                    <img className="w-14" src="https://i.ibb.co/hXnwTBs/Item-26-png.png" alt="" />
+                                    <img className="w-14" src={moneyReturnIcon} alt="" />
                                 </div>
                                 <div>
                                     <h1 className="text-[18px] font-semibold">Money Return</h1>
@@ -80,7 +83,7 @@ const Add = () => {
                             </div>
                             <div className="flex items-center gap-3">
                                 <div>
-                                    <img className="w-14" src="https://i.ibb.co/3CgpGGG/Item-27-png.png" alt="" />
+                                    <img className="w-14" src={memberDiscountIcon} alt="" />
                                 </div>
                                 <div>
                                     <h1 className="text-[18px] font-semibold">Member Discount</h1>

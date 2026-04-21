@@ -11,6 +11,9 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import SubFooter from "./SubFooter";
+import logo from "../../assets/logo.png";
+import dividerShape from "../../assets/div.elementor-element.png";
+import listIcon from "../../assets/Iconfg.png";
 
 // *********Define the validation schema using yup*********
 const schema = yup.object().shape({
@@ -75,31 +78,31 @@ const Footer = () => {
                             {/* ***********Explore**********/}
                             <div>
                                 <h1 className="text-white text-xl font-semibold  mt-2">Explore</h1>
-                                <img className="w-60" src="https://i.ibb.co/gRQ5QMt/div-elementor-element.png" alt="" />
+                                <img className="w-60" src={dividerShape} alt="" />
                                 <div className="">
                                     <ul className="flex gap-10">
                                         <div className="flex flex-col gap-4">
                                             <Link to='/about' className="">
                                                 <li className="flex items-center gap-2 ">
-                                                    <img className="w-4" src="https://i.ibb.co/SQYSXfF/Iconfg.png" alt="" />
+                                                    <img className="w-4" src={listIcon} alt="" />
                                                     <span className="text-md hover:text-[#EEC044] transform duration-300  text-gray-400 ">About</span>
                                                 </li>
                                             </Link>
                                             <Link to='/services' className="">
                                                 <li className="flex items-center gap-2 ">
-                                                    <img className="w-4" src="https://i.ibb.co/SQYSXfF/Iconfg.png" alt="" />
+                                                    <img className="w-4" src={listIcon} alt="" />
                                                     <span className="text-md hover:text-[#EEC044] transform duration-300   text-gray-400 ">Services</span>
                                                 </li>
                                             </Link>
                                             <Link to='/products' className="">
                                                 <li className="flex items-center gap-2 ">
-                                                    <img className="w-4" src="https://i.ibb.co/SQYSXfF/Iconfg.png" alt="" />
+                                                    <img className="w-4" src={listIcon} alt="" />
                                                     <span className="text-md hover:text-[#EEC044] transform duration-300   text-gray-400 ">Products</span>
                                                 </li>
                                             </Link>
                                             <Link to='/shop' className="">
                                                 <li className="flex items-center gap-2 ">
-                                                    <img className="w-4" src="https://i.ibb.co/SQYSXfF/Iconfg.png" alt="" />
+                                                    <img className="w-4" src={listIcon} alt="" />
                                                     <span className="text-md hover:text-[#EEC044] transform duration-300   text-gray-400 ">Shop</span>
                                                 </li>
                                             </Link>
@@ -107,19 +110,19 @@ const Footer = () => {
                                         <div className="flex flex-col gap-4">
                                             <Link to='/careers' className="">
                                                 <li className="flex items-center gap-2 ">
-                                                    <img className="w-4" src="https://i.ibb.co/SQYSXfF/Iconfg.png" alt="" />
+                                                    <img className="w-4" src={listIcon} alt="" />
                                                     <span className="text-md hover:text-[#EEC044] transform duration-300   text-gray-400 ">Careers</span>
                                                 </li>
                                             </Link>
                                             <Link to='/news' className="">
                                                 <li className="flex items-center gap-2 ">
-                                                    <img className="w-4" src="https://i.ibb.co/SQYSXfF/Iconfg.png" alt="" />
+                                                    <img className="w-4" src={listIcon} alt="" />
                                                     <span className="text-md hover:text-[#EEC044] transform duration-300   text-gray-400 ">News</span>
                                                 </li>
                                             </Link>
                                             <Link to='/contact' className="">
                                                 <li className="flex items-center gap-2 ">
-                                                    <img className="w-4" src="https://i.ibb.co/SQYSXfF/Iconfg.png" alt="" />
+                                                    <img className="w-4" src={listIcon} alt="" />
                                                     <span className="text-md hover:text-[#EEC044] transform duration-300   text-gray-400 ">Contact</span>
                                                 </li>
                                             </Link>
@@ -131,7 +134,7 @@ const Footer = () => {
                             {/* ***********Contacts**************/}
                             <div>
                                 <h1 className="text-white text-xl font-semibold  mt-2">Contacts</h1>
-                                <img className="w-60" src="https://i.ibb.co/gRQ5QMt/div-elementor-element.png" alt="" />
+                                <img className="w-60" src={dividerShape} alt="" />
                                 <div className="flex flex-col gap-4">
                                     <div>
                                         <p className="flex items-center gap-2 text-md  text-gray-400">
@@ -164,7 +167,7 @@ const Footer = () => {
                             {/* **********Newsletter***********/}
                             <div>
                                 <h1 className="text-white text-xl font-semibold  mt-2 self-start">Newsletter</h1>
-                                <img className="w-60" src="https://i.ibb.co/gRQ5QMt/div-elementor-element.png" alt="" />
+                                <img className="w-60" src={dividerShape} alt="" />
                                 <form className="" onSubmit={handleSubmit(onSubmit)}>
                                     <input
                                         type="email"

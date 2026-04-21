@@ -2,13 +2,14 @@
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { IoIosCheckboxOutline } from 'react-icons/io';
+import bannerShape from '../../assets/div.shape.png';
 
 const Banners = () => {
     return (
         <div className='bg-[#4BAF47] '>
             <div className='grid grid-cols-1 sm:grid-cols-2 items-center gap-4'>
                 <div>
-                    <img className='sm:w-[600px] w-full h-[450px]' src="https://i.ibb.co/x8VgFZV/div-shape.png" alt="" />
+                    <img className='sm:w-[600px] w-full h-[450px]' src={bannerShape} alt="" />
                 </div>
 
                 <div className='px-5 py-2'>

@@ -24,6 +24,7 @@ import { toast } from 'react-toastify';
 import { TbCurrencyTaka } from 'react-icons/tb';
 import { setBillingDetails } from '../../features/billingSlice';
 import { FaArrowRight } from 'react-icons/fa';
+import siteLogo from '../../assets/logo.png';
 
 
 const Navbar = () => {
@@ -321,7 +322,7 @@ const Navbar = () => {
 
                         <div className="flex justify-between items-center w-full lg:hidden">
                             <Link to='/'>
-                                <img className=' w-28' src='https://i.ibb.co/wsZpB6J/logo.png' alt="Logo" />
+                                <img className=' w-28' src={siteLogo} alt="Logo" />
                             </Link>
                             <div>
                                 <div className="flex gap-5 items-center ">

@@ -11,6 +11,7 @@ import { addToWishlist } from '../../features/wishlistSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../features/cartSlice';
 import { FaSpinner } from 'react-icons/fa';
+import pageHeaderBg from '../../assets/title.png';
 
 const Products_details = () => {
     const { id } = useParams();
@@ -155,7 +156,7 @@ const Products_details = () => {
     }
 
     const divStyle = {
-        backgroundImage: `url('https://i.ibb.co/rybD1fm/title.png')`,
+        backgroundImage: `url(${pageHeaderBg})`,
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',

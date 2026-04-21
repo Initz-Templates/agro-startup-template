@@ -2,11 +2,16 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import logo from '../assets/elements.png';
+import heroBg1 from '../assets/bg.png';
+import heroBg2 from '../assets/bg-3.png';
+import heroBg3 from '../assets/bg-2.png';
 import cardImge1 from '../assets/cardimg1.png';
 import cardImge2 from '../assets/cardimg2.png';
 import cardImge3 from '../assets/cardimg3.png';
 import sectionImg from '../assets/section-2-1.png';
 import sectionImg2 from '../assets/section-2-.png';
+import introIcon1 from '../assets/Icon.png';
+import introIcon2 from '../assets/XCVCVC.png';
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import Our_service from './home/Our_service';
 import Farming from './home/Farming';
@@ -21,24 +26,23 @@ import Add from './home/Add';
 import { Link } from 'react-router-dom';
 const images = [
     {
-        url: 'https://i.ibb.co/tJgWT94/bg.png',
+        url: heroBg1,
         title: 'Agriculture & ',
         title2: 'Eco Farming',
         subtitle: 'Welcome to Agro-Startup Template',
         text: 'Agriculture and eco farming promote a healthier environment and better future.'
     },
     {
-        url: 'https://i.ibb.co/7ktP3Pj/bg-3.png',
+        url: heroBg2,
         title: 'Agriculture',
         title2: '& Organic Market',
         subtitle: 'Welcome to Agr0-Startup Template',
         text: 'Agriculture and the organic market support sustainable practices.'
     },
     {
-        url: 'https://i.ibb.co/J3DRmWk/bg-2.png',
+        url: heroBg3,
         title: 'Natural Products',
         title2: 'For Lovers of Healthy',
-
         subtitle: 'Join Us for a Greener Future',
         text: 'Discover the benefits of sustainable farming and eco-friendly practices.'
     },

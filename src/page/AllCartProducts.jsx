@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import { useState } from 'react';
 import { setBillingDetails } from '../features/billingSlice';
 import { FaArrowRight } from 'react-icons/fa';
+import pageHeaderBg from '../assets/title.png';
 
 const AllCartProducts = () => {
     const cartItems = useSelector(state => state.cart.items);
@@ -57,7 +58,7 @@ const AllCartProducts = () => {
 
     return (
         <div>
-            <div style={{ backgroundImage: `url('https://i.ibb.co/rybD1fm/title.png')`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', height: '300px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <div style={{ backgroundImage: `url(${pageHeaderBg})`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', height: '300px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <div>
                     <p className="text-center text-white opacity-75">
                         <Link to='/' className='hover:text-[#49A760] transform duration-300'>Home</Link> / Cart
