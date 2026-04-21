@@ -9,6 +9,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import promoFruit from '../../assets/14.png.png';
 import moneyReturnIcon from '../../assets/item-26.png';
 import memberDiscountIcon from '../../assets/item-27.png';
+import { getProducts } from "../../services/catalogService";
+import { matchesCategory } from "../../utils/productCategory";
 
 const Add = () => {
     const [discountProducts, setDiscountProducts] = useState([]);
@@ -18,13 +20,11 @@ const Add = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await fetch('product.json');
-                if (!response.ok) {
-                    throw new Error('Failed to fetch products');
-                }
-                const data = await response.json();
-                const filteredProducts = data.filter(product => product.discount === 20); // Filter for 20% discount products
-                setDiscountProducts(filteredProducts);
+                const data = await getProducts();
+                const allProducts = Array.isArray(data) ? data : [];
+                const fruits = allProducts.filter((product) => matchesCategory(product, "fruits"));
+                const discountedFruits = fruits.filter((product) => Number(product.discount) > 0);
+                setDiscountProducts(discountedFruits.length > 0 ? discountedFruits : fruits);
             } catch (error) {
                 console.error(error);
             }
@@ -59,7 +59,7 @@ const Add = () => {
                                 <h1 className="text-white text-3xl uppercase font-semibold text-center">Organic <br /> Fresh Fruit</h1>
                                 <img className="w-52 my-5" src={promoFruit} alt="" />
                                 <div className="flex flex-col justify-center items-center hover:scale-105 transform duration-300">
-                                    <Link to="/products">
+                                    <Link to="/products?category=fruits">
                                     <button className="bg-[#EEC044] flex text-[14px] items-center gap-1 hover:bg-[#ffcb3a] transform duration-300 py-2 px-8 rounded font-semibold">
                                         All Products
                                         <HiArrowNarrowRight className='text-lg' />
@@ -104,7 +104,7 @@ const Add = () => {
                                             <div className='flex justify-center'>
                                                 <img className='w-40 md:w-36 hover:scale-105 transform transition-transform duration-300' src={product.image} alt="" />
                                             </div>
-                                            <p className='text-center text-[12px] font-serif text-[#666666]'>{product.title}</p>
+                                            <p className='text-center text-[12px] font-serif text-[#666666]'>{product.title || "Farm fresh produce"}</p>
                                             <h2 className="text-md font-semibold text-center font-monrope mt-1">{product.product_name}</h2>
                                             <div className="mt-1 flex flex-col items-center justify-center">
                                                 <p className="text-red-500 line-through flex items-center"><TbCurrencyTaka className='text-xl' />{product.price}</p>

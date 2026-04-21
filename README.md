@@ -31,9 +31,63 @@ cd agro-startup-template
 # Setup default environment variables
  
 # For Linux
-cp env.example .env
+cp .env.example .env
 # For Windows
-copy env.example .env
+copy .env.example .env
  
 # Install dependencies
 npm install
+
+## Backend Configuration
+
+This project now uses strict backend APIs with no static fallback.
+
+- Set `VITE_API_BASE_URL` in `.env`.
+- Example value: `http://localhost:5000/api`
+- API contract reference: `docs/API_CONTRACT.md`
+
+## Auth Endpoints Required
+
+To use Login/Register and role-protected farmer pages, backend should expose:
+
+- `POST /auth/login`
+- `POST /auth/register`
+- `POST /auth/refresh`
+
+Login/register responses should include:
+
+- `token`
+- `refreshToken`
+- `user` with `role` (`farmer` or `customer`)
+
+Protected frontend routes:
+
+- `/checkout` and `/payment-success` require authenticated user.
+- `/profile` requires authenticated user.
+- `/admin/products/*` requires authenticated farmer user.
+
+## Backend Setup (Mongo + Node + Express)
+
+```bash
+# From project root
+cd backend
+
+# Create backend env
+cp .env.example .env
+# Windows
+copy .env.example .env
+
+# Install backend dependencies
+npm install
+
+# Seed sample FarmStore users and products
+npm run seed
+
+# Run backend
+npm run dev
+```
+
+Default seeded farmer credentials:
+
+- Email: `farmer.arjun@agro.com`
+- Password: `Farmer@123`

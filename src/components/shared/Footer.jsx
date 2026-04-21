@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useState } from "react";
-import { FaFacebookF, FaInstagram, FaPinterest, FaTwitter, FaSpinner, FaWeebly } from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaTwitter, FaSpinner, FaLinkedinIn } from "react-icons/fa";
 import { IoMdPaperPlane, IoMdTime } from "react-icons/io";
 import { IoCallOutline, IoLocationOutline } from "react-icons/io5";
 import { MdMailOutline } from "react-icons/md";
@@ -11,9 +11,10 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import SubFooter from "./SubFooter";
-import logo from "../../assets/logo.png";
+import logoDark from "../../assets/logo-dark.png";
 import dividerShape from "../../assets/div.elementor-element.png";
 import listIcon from "../../assets/Iconfg.png";
+import { useCurrentLocation } from "../../hooks/useCurrentLocation";
 
 // *********Define the validation schema using yup*********
 const schema = yup.object().shape({
@@ -22,6 +23,7 @@ const schema = yup.object().shape({
 
 const Footer = () => {
     const [isLoading, setIsLoading] = useState(false);
+    const { locationLabel, loadingLocation, requestLocation } = useCurrentLocation();
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         resolver: yupResolver(schema),
     });
@@ -45,7 +47,7 @@ const Footer = () => {
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-5">
                             {/* **********Logo sections*************/}
                             <div className="flex flex-col items-center md:items-start">
-                                <img className="w-48" src="https://banner2.cleanpng.com/20180326/pse/kisspng-sustainable-agriculture-research-conservation-agri-agriculture-5ab96f69ed9fb2.4696676415221021219733.jpg" alt="" />
+                                <img className="w-48" src={logoDark} alt="FarmStore" />
                                 <p className="text-gray-400 mt-5 text-center md:text-start">
                                 </p>
                                 <div className="mt-4">
@@ -53,23 +55,23 @@ const Footer = () => {
                                     <div className='flex items-center gap-2 text-white'>
 
                                         <div className="flex justify-center items-center bg-[#1F1E17] rounded-full w-10 h-10 ">
-                                        <a href='https://www.facebook.com/profile.php?id=61556962362662' target='_blank'>
+                                        <a href='https://www.facebook.com/' target='_blank' rel="noreferrer">
                                             <FaFacebookF className="text-white text-xl transform transition duration-300 hover:scale-110" />
                                             </a>
                                         </div>
                                         <div className="flex justify-center items-center bg-[#1F1E17] rounded-full w-10 h-10 ">
-                                        <a href='https://www.instagram.com/initializ.ai/' target='_blank'>
+                                        <a href='https://www.instagram.com/' target='_blank' rel="noreferrer">
                                             <FaInstagram className="text-white text-xl transform transition duration-300 hover:scale-110" />
                                             </a>
                                         </div>
                                         <div className="flex justify-center items-center bg-[#1F1E17] rounded-full w-10 h-10 ">
-                                        <a href='https://x.com/initializ/' target='_blank'>
+                                        <a href='https://x.com/' target='_blank' rel="noreferrer">
                                             <FaTwitter className="text-white text-xl transform transition duration-300 hover:scale-110" />
                                             </a>
                                         </div>
                                         <div className="flex justify-center items-center bg-[#1F1E17] rounded-full w-10 h-10 ">
-                                        <a href='https://initializ.ai/' target='_blank'>
-                                            <FaWeebly className="text-white text-xl transform transition duration-300 hover:scale-110" />
+                                        <a href='https://www.linkedin.com/' target='_blank' rel="noreferrer">
+                                            <FaLinkedinIn className="text-white text-xl transform transition duration-300 hover:scale-110" />
                                             </a>
                                         </div>
                                     </div>
@@ -100,20 +102,8 @@ const Footer = () => {
                                                     <span className="text-md hover:text-[#EEC044] transform duration-300   text-gray-400 ">Products</span>
                                                 </li>
                                             </Link>
-                                            <Link to='/shop' className="">
-                                                <li className="flex items-center gap-2 ">
-                                                    <img className="w-4" src={listIcon} alt="" />
-                                                    <span className="text-md hover:text-[#EEC044] transform duration-300   text-gray-400 ">Shop</span>
-                                                </li>
-                                            </Link>
                                         </div>
                                         <div className="flex flex-col gap-4">
-                                            <Link to='/careers' className="">
-                                                <li className="flex items-center gap-2 ">
-                                                    <img className="w-4" src={listIcon} alt="" />
-                                                    <span className="text-md hover:text-[#EEC044] transform duration-300   text-gray-400 ">Careers</span>
-                                                </li>
-                                            </Link>
                                             <Link to='/news' className="">
                                                 <li className="flex items-center gap-2 ">
                                                     <img className="w-4" src={listIcon} alt="" />
@@ -143,22 +133,30 @@ const Footer = () => {
                                     </div>
                                     <div>
                                         <p className="flex items-center gap-2 text-md  text-gray-400">
-                                            <IoLocationOutline className="text-xl text-[#EEC044]" /> <span>Georgia, Atlanta</span>
+                                            <IoLocationOutline className="text-xl text-[#EEC044]" />
+                                            <button
+                                              type="button"
+                                              onClick={requestLocation}
+                                              className="text-gray-400 hover:text-[#EEC044] transition-colors"
+                                              title="Click to share current location"
+                                            >
+                                              {loadingLocation ? "Detecting location..." : locationLabel}
+                                            </button>
                                         </p>
                                     </div>
                                     <div>
                                         <p className="flex items-center gap-2 text-md  text-gray-400">
                                             <IoCallOutline className="text-xl text-[#EEC044]" />
-                                            <a href="tel:0000000000" className="text-gray-400 hover:text-[#EEC044]">
-                                            0000000000
+                                            <a href="tel:+14045550199" className="text-gray-400 hover:text-[#EEC044]">
+                                            +1 404 555 0199
                                             </a>
                                         </p>
                                     </div>
                                     <div>
                                         <p className="flex items-center gap-2 text-md  text-gray-400">
                                             <MdMailOutline className="text-xl text-[#EEC044]" />
-                                            <a href="mailto:support@agrios.com" className="text-gray-400 hover:text-[#EEC044]">
-                                            support@initializ.ai
+                                            <a href="mailto:support@farmstore.com" className="text-gray-400 hover:text-[#EEC044]">
+                                            support@farmstore.com
                                             </a>
                                         </p>
                                     </div>

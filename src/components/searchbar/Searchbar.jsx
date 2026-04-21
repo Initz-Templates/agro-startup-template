@@ -1,5 +1,5 @@
-/* eslint-disable no-unused-vars */
 import  { useState } from 'react';
+import { useEffect } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
@@ -7,7 +7,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import MenuItem from '@mui/material/MenuItem';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import { getProducts } from '../../services/catalogService';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -54,20 +56,41 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-const suggestions = [
-    'Apple',
-    'Banana',
-    'Cherry',
-    'Date',
-    'Elderberry',
-    'Fig',
-    'Grape',
-    'Honeydew',
-];
-
 const Searchbar = () => {
     const [searchText, setSearchText] = useState('');
     const [showSuggestions, setShowSuggestions] = useState(false);
+    const [suggestions, setSuggestions] = useState([]);
+    const [searchHistory, setSearchHistory] = useState([]);
+    const navigate = useNavigate();
+    const historyKey = "farmstore:search-history";
+
+    useEffect(() => {
+        const loadSuggestions = async () => {
+            try {
+                const products = await getProducts();
+                const names = Array.isArray(products)
+                    ? products.map((product) => product.product_name).filter(Boolean)
+                    : [];
+                setSuggestions(names);
+            } catch (error) {
+                console.error("Failed to fetch search suggestions", error);
+            }
+        };
+
+        loadSuggestions();
+
+        const storedHistory = localStorage.getItem(historyKey);
+        if (storedHistory) {
+            try {
+                const parsed = JSON.parse(storedHistory);
+                if (Array.isArray(parsed)) {
+                    setSearchHistory(parsed);
+                }
+            } catch (error) {
+                console.error("Failed to parse search history", error);
+            }
+        }
+    }, []);
 
     const handleSearchChange = (event) => {
         setSearchText(event.target.value);
@@ -79,9 +102,21 @@ const Searchbar = () => {
         setShowSuggestions(false);
     };
 
+    const saveSearchHistory = (value) => {
+        const query = value.trim();
+        if (!query) return;
+
+        const updated = [query, ...searchHistory.filter((item) => item.toLowerCase() !== query.toLowerCase())].slice(0, 8);
+        setSearchHistory(updated);
+        localStorage.setItem(historyKey, JSON.stringify(updated));
+    };
+
     const handleSuggestionClick = (suggestion) => {
         setSearchText(suggestion);
         setShowSuggestions(false);
+        navigate(`/products?q=${encodeURIComponent(suggestion)}`);
+        saveSearchHistory(suggestion);
+        clearSearch();
     };
 
     const handleSearchButtonClick = () => {
@@ -94,12 +129,16 @@ const Searchbar = () => {
     };
 
     const performSearch = () => {
-        toast.success(`Searching for: ${searchText}`);
+        const query = searchText.trim().toLowerCase();
+        const match = suggestions.find((item) => item.toLowerCase().includes(query));
+        toast.success(match ? `Showing results for: ${searchText}` : `No exact match found for: ${searchText}`);
         setShowSuggestions(false);
-        clearSearch(); 
+        navigate(`/products?q=${encodeURIComponent(searchText.trim())}`);
+        saveSearchHistory(searchText);
+        clearSearch();
     };
 
-    const handleKeyPress = (event) => {
+    const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
             event.preventDefault();
             if (searchText.trim() !== '') {
@@ -110,9 +149,11 @@ const Searchbar = () => {
         }
     };
 
-    const filteredSuggestions = suggestions.filter(suggestion =>
-        suggestion.toLowerCase().includes(searchText.toLowerCase())
-    );
+    const filteredSuggestions = searchText.trim()
+        ? suggestions.filter((suggestion) =>
+            suggestion.toLowerCase().includes(searchText.toLowerCase())
+        )
+        : searchHistory;
 
     return (
         <div>
@@ -124,10 +165,12 @@ const Searchbar = () => {
                     value={searchText}
                     onChange={handleSearchChange}
                     onFocus={() => setShowSuggestions(true)}
-                    onBlur={() => setShowSuggestions(false)}
+                    onBlur={() => {
+                        window.setTimeout(() => setShowSuggestions(false), 100);
+                    }}
                     placeholder="Search…"
                     inputProps={{ 'aria-label': 'search' }}
-                    onKeyPress={handleKeyPress}
+                    onKeyDown={handleKeyDown}
                 />
                 {searchText && (
                     <IconButton
@@ -158,7 +201,9 @@ const Searchbar = () => {
                             top: '100%',
                             left: 0,
                             right: 0,
-                            zIndex: 1,
+                            zIndex: 1400,
+                            maxHeight: 'min(320px, calc(100vh - 120px))',
+                            overflowY: 'auto',
                         }}
                     >
                         {filteredSuggestions.map((suggestion, index) => (

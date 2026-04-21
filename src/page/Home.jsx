@@ -29,14 +29,14 @@ const images = [
         url: heroBg1,
         title: 'Agriculture & ',
         title2: 'Eco Farming',
-        subtitle: 'Welcome to Agro-Startup Template',
+        subtitle: 'Welcome to FarmStore',
         text: 'Agriculture and eco farming promote a healthier environment and better future.'
     },
     {
         url: heroBg2,
         title: 'Agriculture',
         title2: '& Organic Market',
-        subtitle: 'Welcome to Agr0-Startup Template',
+        subtitle: 'Welcome to FarmStore Marketplace',
         text: 'Agriculture and the organic market support sustainable practices.'
     },
     {
@@ -160,17 +160,17 @@ const Home = () => {
                 <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center justify-between gap-5 mt-[-40px] z-10'>
                     <div className='bg-white shadow-lg flex flex-col items-center gap-3 py-2 px-10 rounded-lg shadow-gray-400 hover:bg-green-100 transform duration-300 group'>
                         <p style={{ fontFamily: "'Covered By Your Grace', cursive" }} className='text-[#EEC044] text-xl'>Feature 01</p>
-                        <h1 className='text-lg font-semibold text-center whitespace-nowrap'>We are using a <br /> new technology</h1>
+                        <h1 className='text-lg font-semibold text-center whitespace-nowrap'>Real-time farmer <br />inventory updates</h1>
                         <img className="w-16 transform transition-transform duration-300 group-hover:scale-110" src={cardImge1} alt="" />
                     </div>
                     <div className='bg-white shadow-lg flex flex-col items-center gap-3 py-2 px-10  rounded-lg shadow-gray-400 hover:bg-green-100 transform duration-300 group'>
                         <p style={{ fontFamily: "'Covered By Your Grace', cursive" }} className='text-[#EEC044] text-xl'>Feature 02</p>
-                        <h1 className='text-lg font-semibold text-center whitespace-nowrap'>Good in smart <br />organic services</h1>
+                        <h1 className='text-lg font-semibold text-center whitespace-nowrap'>Direct farm-to-home <br />shopping flow</h1>
                         <img className="w-16 transform transition-transform duration-300 group-hover:scale-110" src={cardImge2} alt="" />
                     </div>
                     <div className="bg-white shadow-lg flex flex-col items-center gap-3 py-2 px-10 rounded-lg shadow-gray-400 hover:bg-green-100 transform duration-300 group">
-                        <p style={{ fontFamily: "'Covered By Your Grace', cursive" }} className="text-[#EEC044] text-xl">Feature 02</p>
-                        <h1 className="text-lg font-semibold text-center whitespace-nowrap">Reforming <br /> in the systems</h1>
+                        <p style={{ fontFamily: "'Covered By Your Grace', cursive" }} className="text-[#EEC044] text-xl">Feature 03</p>
+                        <h1 className="text-lg font-semibold text-center whitespace-nowrap">Secure checkout and <br />verified buyer reviews</h1>
                         <img className="w-16 transform transition-transform duration-300 group-hover:scale-110" src={cardImge3} alt="Feature" />
                     </div>
                 </div>
@@ -186,11 +186,11 @@ const Home = () => {
 
                     <div className='pt-36 md:pt-0 lg:pt-0 xl:pt-0'>
                         <h5 style={{ fontFamily: "'Covered By Your Grace', cursive" }} className='text-[#EEC044] text-2xl'>Our Introductions</h5>
-                        <h1 className='text-5xl sm:text-xl md:text-2xl lg:text-4xl xl:text-4xl 2xl:text-[43px] font-semibold mt-2'>Agriculture & Organic
-                            Product Farm</h1>
-                        <h3 className='font-semibold text-[16px] md:text-[15px] whitespace-nowrap lg:text-[16px] text-[#4BAF47] my-5'>Agro-Startup is the largest global organic farm.</h3>
+                        <h1 className='text-5xl sm:text-xl md:text-2xl lg:text-4xl xl:text-4xl 2xl:text-[43px] font-semibold mt-2'>FarmStore Digital
+                            Agriculture Marketplace</h1>
+                        <h3 className='font-semibold text-[16px] md:text-[15px] whitespace-nowrap lg:text-[16px] text-[#4BAF47] my-5'>FarmStore connects buyers directly with trusted farmers.</h3>
                         <p className='text-[#878680] text-[14px]'>
-                        Agriculture & organic product farms cultivate sustainable, chemical-free crops, promoting environmental stewardship and healthy living through natural farming practices.
+                        FarmStore helps farmers publish products directly and enables customers to shop fresh produce with transparent pricing, trusted quality, and secure ordering.
                         </p>
                         <div className='flex flex-col sm:flex-row my-5 items-center gap-14 w-[100%] justify-between'>
                             <div className='flex items-center gap-3'>

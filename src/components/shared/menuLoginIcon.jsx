@@ -2,17 +2,14 @@ import React from 'react';
 import { Tooltip, IconButton, Avatar, Menu, MenuItem } from '@mui/material';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import PersonIcon from '@mui/icons-material/Person';
-const user = [
-    {
-        id: 1,
-        // name: "Anamul",
-        image: "https://www.w3schools.com/howto/img_avatar.png"
-    }
-]
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const MenuLoginIcon = () => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
+    const { authUser, logout } = useAuth();
+    const navigate = useNavigate();
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -25,7 +22,7 @@ const MenuLoginIcon = () => {
     return (
         <div>
             <Tooltip
-                title={user[0].name ? user[0].name : "Please login"}
+                title={authUser?.name ? authUser.name : "Please login"}
                 arrow
                 placement="top"
             >
@@ -39,7 +36,7 @@ const MenuLoginIcon = () => {
                     <Avatar sx={{ width: 32, height: 32, backgroundColor: '#ECF5E8', color: "black" }}>
 
                         {
-                            user[0].name ? <PersonIcon /> : <PersonOutlineIcon />
+                            authUser?.name ? <PersonIcon /> : <PersonOutlineIcon />
                         }
                     </Avatar>
                 </IconButton>
@@ -59,15 +56,54 @@ const MenuLoginIcon = () => {
                     horizontal: 'right',
                 }}
             >
-                {user[0].name ? (
+                {authUser?.name ? (
                     <>
-                        <MenuItem onClick={handleClose}>Profile</MenuItem>
-                        <MenuItem onClick={handleClose}>Logout</MenuItem>
+                        {authUser?.role === "farmer" && (
+                            <MenuItem
+                                onClick={() => {
+                                    navigate("/admin/products");
+                                    handleClose();
+                                }}
+                            >
+                                Farmer Dashboard
+                            </MenuItem>
+                        )}
+                        <MenuItem
+                            onClick={() => {
+                                navigate("/profile");
+                                handleClose();
+                            }}
+                        >
+                            Profile
+                        </MenuItem>
+                        <MenuItem
+                            onClick={() => {
+                                logout();
+                                handleClose();
+                                navigate("/");
+                            }}
+                        >
+                            Logout
+                        </MenuItem>
                     </>
                 ) : (
                     <>
-                        <MenuItem onClick={handleClose}>Login</MenuItem>
-                        <MenuItem onClick={handleClose}>Register</MenuItem>
+                        <MenuItem
+                            onClick={() => {
+                                navigate("/login");
+                                handleClose();
+                            }}
+                        >
+                            Login
+                        </MenuItem>
+                        <MenuItem
+                            onClick={() => {
+                                navigate("/register");
+                                handleClose();
+                            }}
+                        >
+                            Register
+                        </MenuItem>
                     </>
                 )}
             </Menu>

@@ -15,3 +15,60 @@ body{
   
     font-family: 'Raleway', serif;
 }
+
+.fs-card {
+    background: #fff;
+    border: 1px solid #edf2ea;
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(21, 42, 24, 0.08);
+    transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+
+.fs-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 30px rgba(21, 42, 24, 0.14);
+    border-color: #d8e7d5;
+}
+
+.fs-btn-primary {
+    border: 1px solid #4BAF47;
+    background: #4BAF47;
+    color: #fff;
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    transition: all 200ms ease;
+}
+
+.fs-btn-primary:hover {
+    background: #3f973d;
+    border-color: #3f973d;
+}
+
+.fs-btn-outline {
+    border: 1px solid #e5c96e;
+    background: #fff;
+    color: #252525;
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    transition: all 200ms ease;
+}
+
+.fs-btn-outline:hover {
+    background: #F7C35F;
+    border-color: #F7C35F;
+    color: #fff;
+}
+
+/* Keep long dropdown menus inside viewport with internal scrolling. */
+.MuiPopover-paper.MuiMenu-paper {
+    max-height: min(360px, calc(100vh - 32px));
+    overflow-y: auto;
+}

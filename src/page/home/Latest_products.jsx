@@ -4,27 +4,31 @@ import { TbCurrencyTaka } from 'react-icons/tb';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../features/cartSlice';
+import { getProducts } from '../../services/catalogService';
 
 const LatestProducts = () => {
     const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
     const dispatch = useDispatch();
     const cartItems = useSelector(state => state.cart.items);
 
     useEffect(() => {
-        const fetchProducts = async () => {
+        const loadProducts = async () => {
             try {
-                const response = await fetch('product.json');
-                if (!response.ok) {
-                    throw new Error('Failed to fetch products');
-                }
-                const data = await response.json();
+                setLoading(true);
+                setError("");
+                const data = await getProducts();
                 setProducts(data);
             } catch (error) {
                 console.error('Error fetching products:', error);
+                setError("Unable to load products right now. Please try again.");
+            } finally {
+                setLoading(false);
             }
         };
 
-        fetchProducts();
+        loadProducts();
     }, []);
 
     const handleAddToCart = (product) => {
@@ -45,11 +49,17 @@ const LatestProducts = () => {
                     <p style={{ fontFamily: "'Covered By Your Grace', cursive" }} className='text-[#EEC044] text-xl text-center'>Recently Added</p>
                     <h1 className="text-center text-3xl font-semibold font-monrope">Latest Products</h1>
                 </div>
+                {loading && (
+                    <p className="text-center text-[#878680]">Loading products...</p>
+                )}
+                {error && !loading && (
+                    <p className="text-center text-red-500">{error}</p>
+                )}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-5 sm:gap-5 md:gap-10 lg:gap-10 xl:gap-5 2xl:gap-4 items-center justify-center justify-items-center mt-10">
-                    {products.slice(0, 10).map(product => {
+                    {!loading && !error && products.slice(0, 10).map(product => {
                         const discountedPrice = product.discount ? (product.price * 0.8).toFixed(2) : null;
                         return (
-                            <div key={product.id} className="bg-white hover:bg-slate-100 transform duration-300 hover:scale-105 shadow-slate-500/25 rounded-lg shadow py-8 sm:py-8 md:py-5 lg:py-7 xl:py-8 2xl:py-8 w-60 sm:w-60 md:w-[200px] lg:w-[220px] xl:w-60 2xl:w-60 cursor-pointer">
+                            <div key={product.id} className="fs-card py-8 sm:py-8 md:py-5 lg:py-7 xl:py-8 2xl:py-8 w-60 sm:w-60 md:w-[200px] lg:w-[220px] xl:w-60 2xl:w-60 cursor-pointer">
                                 <Link to={`product-details/${product.id}`}>
                                     <div className='flex justify-center'>
                                         <img className='w-40 md:w-36 hover:scale-105 transform transition-transform duration-300' src={product.image} alt="" />
@@ -66,7 +76,7 @@ const LatestProducts = () => {
                                     )}
                                 </Link>
                                 <div className='flex justify-center pt-2'>
-                                    <button onClick={() => handleAddToCart(product)} className='border border-[#F7C35F] transform duration-300 hover:text-white uppercase font-semibold text-[12px] font-monrope hover:bg-[#F7C35F] px-4 py-1 rounded-full'>Add to cart</button>
+                                    <button onClick={() => handleAddToCart(product)} className='fs-btn-outline font-monrope'>Add to cart</button>
                                 </div>
                             </div>
                         );

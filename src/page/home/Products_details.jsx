@@ -11,6 +11,7 @@ import { addToWishlist } from '../../features/wishlistSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../features/cartSlice';
 import { FaSpinner } from 'react-icons/fa';
+import { addProductReview, getProductById } from '../../services/catalogService';
 import pageHeaderBg from '../../assets/title.png';
 
 const Products_details = () => {
@@ -20,26 +21,22 @@ const Products_details = () => {
     const [error, setError] = useState(null);
     const [quantity, setQuantity] = useState(1);
     const [reviews, setReviews] = useState([]);
-    const [newReview, setNewReview] = useState({ name: '', email: '', review: '', date: new Date().toLocaleDateString() });
+    const [newReview, setNewReview] = useState({ rating: 5, review: '' });
     const dispatch = useDispatch();
     const wishlistItems = useSelector((state) => state.wishlist.items);
     const cartItems = useSelector(state => state.cart.items);
     const [isSubmittingReview, setIsSubmittingReview] = useState(false);
 
     useEffect(() => {
-        const fetchProduct = async () => {
+        const loadProduct = async () => {
             try {
-                const response = await fetch('/product.json');
-                if (!response.ok) {
-                    throw new Error('Failed to fetch product details');
-                }
-                const data = await response.json();
-                const selectedProduct = data.find(p => p.id === parseInt(id));
+                const selectedProduct = await getProductById(id);
                 if (selectedProduct) {
-                    if (selectedProduct.discount) {
-                        selectedProduct.discountedPrice = (selectedProduct.price * 0.8).toFixed(2);
-                    }
-                    setProduct(selectedProduct);
+                    const formattedProduct = selectedProduct.discount
+                        ? { ...selectedProduct, discountedPrice: (selectedProduct.price * 0.8).toFixed(2) }
+                        : selectedProduct;
+                    setProduct(formattedProduct);
+                    setReviews(Array.isArray(selectedProduct.reviews) ? selectedProduct.reviews : []);
                 } else {
                     setError('Product not found');
                 }
@@ -51,9 +48,7 @@ const Products_details = () => {
             }
         };
 
-        fetchProduct();
-        const storedReviews = JSON.parse(localStorage.getItem(`reviews-${id}`)) || [];
-        setReviews(storedReviews);
+        loadProduct();
     }, [id]);
 
     // ****************add to wishlist********
@@ -111,36 +106,33 @@ const Products_details = () => {
         }
     };
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setNewReview({ ...newReview, [name]: value });
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        setNewReview((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleReviewSubmit = () => {
+    const handleReviewSubmit = async () => {
         setIsSubmittingReview(true);
-        if (!newReview.name.trim() || !newReview.email.trim() || !newReview.review.trim()) {
-            toast.error("Please fill out all fields");
+        if (!newReview.review.trim()) {
+            toast.error("Please write your review first.");
             setIsSubmittingReview(false);
             return;
         }
 
-        // ***************Validate email format****************
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(newReview.email)) {
-            toast.error("Please enter a valid email address");
-            setIsSubmittingReview(false);
-            return;
-        }
-
-        // ************Simulate a delay of 2 seconds for the loading spinner*********
-        setTimeout(() => {
-            const updatedReviews = [...reviews, newReview];
-            setReviews(updatedReviews);
-            localStorage.setItem(`reviews-${id}`, JSON.stringify(updatedReviews));
-            setNewReview({ name: '', email: '', review: '', date: new Date().toLocaleDateString() });
+        try {
+            const data = await addProductReview(id, {
+                rating: Number(newReview.rating),
+                comment: newReview.review,
+            });
+            setReviews(Array.isArray(data?.reviews) ? data.reviews : []);
+            setNewReview({ rating: 5, review: '' });
             toast.success("Review submitted successfully");
+        } catch (submitError) {
+            console.error("Review submit failed", submitError);
+            toast.error(submitError?.response?.data?.message || "Unable to submit review.");
+        } finally {
             setIsSubmittingReview(false);
-        }, 2000);
+        }
     };
 
     if (loading) {
@@ -193,7 +185,7 @@ const Products_details = () => {
                                 <p className="mt-2 text-xl text-[#49A760] flex items-center font-monrope"><TbCurrencyTaka className='text-2xl' />{product.price}</p>
                             )}
                         </div>
-                        <p className='mt-3 text-[#878680] text-[13px] font-monrope text-center md:text-start'>({product.review} Customer Review)</p>
+                        <p className='mt-3 text-[#878680] text-[13px] font-monrope text-center md:text-start'>({reviews.length} Customer Reviews)</p>
                         <hr className='my-5' />
                         <p className="mt-5 text-[#878680] font-sans">{product.description}</p>
 
@@ -227,32 +219,41 @@ const Products_details = () => {
 
                 <div className='py-10'>
                     <h1 className='text-2xl font-semibold font-monrope mb-2'>Description</h1>
-                    <p className='text-[#878680] font-sans'>
-                        Lorem ipsum dolor sit amet sectetur adipiscin elit cras feuiat antesed ces condimentum viverra duis autue nim convallis id diam vitae duis egety dictum
-                        erosin dictum sem. Vivamus sed molestie sapien aliquam et facilisis arcu dut molestie augue suspendisse sodales tortor nunced quis cto ligula posuere
-                        cursus keuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecated cupidatat non proident
-                        sunt in culpa qui officia deserunt mollit anim id est laborum ivamus sed molestie sapien.
-                    </p>
+                    <p className='text-[#878680] font-sans'>{product.description || "No description available yet."}</p>
                 </div>
 
                 <div className='mt-20'>
-                    <p className='text-xl font-bold font-monrope '>{product.review} review for {product.product_name}</p>
-                    <div className='mt-10 flex items-center gap-10'>
-                        <div className='w-24 h-24 overflow-hidden rounded-full'>
-                            <img className='w-full h-full object-cover' src={product.review_image} alt="" />
-                        </div>
-                        <div>
-                            <h1 className='text-xl font-semibold mb-2'>{product.review_name}</h1>
-                            <h1 className='text-sm text-[#4BAF47] mb-2 font-semibold'>{product.date}</h1>
-                            <p className='text-[#878680] font-sans'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid odio deleniti, debitis ad nam repellat accusantium voluptate porro laboriosam! Sed.</p>
-                        </div>
+                    <p className='text-xl font-bold font-monrope '>{reviews.length} review(s) for {product.product_name}</p>
+                    <div className='mt-10 flex flex-col gap-6'>
+                        {reviews.length === 0 && <p className='text-[#878680]'>No reviews yet. Be the first to review this product.</p>}
+                        {reviews.map((item) => (
+                            <div key={item._id || `${item.name}-${item.createdAt}`} className='border rounded-lg p-4'>
+                                <h1 className='text-lg font-semibold mb-1'>{item.name}</h1>
+                                <h1 className='text-sm text-[#4BAF47] mb-2 font-semibold'>
+                                    {item.rating}/5 · {new Date(item.createdAt || Date.now()).toLocaleDateString()}
+                                </h1>
+                                <p className='text-[#878680] font-sans'>{item.comment}</p>
+                            </div>
+                        ))}
                     </div>
                     <hr className='my-10' />
                 </div>
 
                 <div className='mt-10'>
                     <h1 className="text-2xl font-bold mb-4">Add a review</h1>
-                    <p className='text-[#878680] font-sans mb-2'>Your rating</p>
+                    <p className='text-[#878680] font-sans mb-2'>Your rating and feedback</p>
+                    <select
+                        name="rating"
+                        value={newReview.rating}
+                        onChange={handleInputChange}
+                        className="w-full p-3 border bg-[#f7f4f0] border-[#f7f4f0] rounded-lg focus:outline-none focus:border-green-500 mb-4"
+                    >
+                        <option value={5}>5 - Excellent</option>
+                        <option value={4}>4 - Very Good</option>
+                        <option value={3}>3 - Good</option>
+                        <option value={2}>2 - Fair</option>
+                        <option value={1}>1 - Poor</option>
+                    </select>
                     <textarea
                         className="w-full p-3 border bg-[#f7f4f0] border-[#f7f4f0] rounded-lg focus:outline-none focus:border-green-500 mb-4"
                         placeholder="Write your review here..."
@@ -262,26 +263,6 @@ const Products_details = () => {
                         required
                         onChange={handleInputChange}
                     ></textarea>
-                    <div className='flex items-center gap-4'>
-                        <input
-                            type="text"
-                            className="w-full p-3 border bg-[#f7f4f0] border-[#f7f4f0] rounded-lg focus:outline-none focus:border-green-500 mb-4"
-                            placeholder="Your name"
-                            name="name"
-                            value={newReview.name}
-                            required
-                            onChange={handleInputChange}
-                        />
-                        <input
-                            type="email"
-                            className="w-full p-3 border bg-[#f7f4f0] border-[#f7f4f0] rounded-lg focus:outline-none focus:border-green-500 mb-4"
-                            placeholder="Your email"
-                            name="email"
-                            required
-                            value={newReview.email}
-                            onChange={handleInputChange}
-                        />
-                    </div>
                     <div style={{display:'flex',justifyContent:'space-between', alignItems:'center'}}>
                     <button
                         className={`relative mt-5 flex items-center justify-center gap-1 w-2/12 p-3 bg-[#4BAF47] font-monrope text-white rounded-md hover:bg-[#6cd469] transform duration-300 ${isSubmittingReview ? 'opacity-50 pointer-events-none' : ''

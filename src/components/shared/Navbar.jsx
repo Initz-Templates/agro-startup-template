@@ -24,7 +24,9 @@ import { toast } from 'react-toastify';
 import { TbCurrencyTaka } from 'react-icons/tb';
 import { setBillingDetails } from '../../features/billingSlice';
 import { FaArrowRight } from 'react-icons/fa';
-import siteLogo from '../../assets/logo.png';
+import logoLight from '../../assets/logo.png';
+import logoDark from '../../assets/logo-dark.png';
+import { useAuth } from '../../context/AuthContext';
 
 
 const Navbar = () => {
@@ -38,6 +40,7 @@ const Navbar = () => {
     const [anchorElProducts, setAnchorElProducts] = useState(null);
     const cartItems = useSelector((state) => state.cart.items);
     const wishlistItems = useSelector((state) => state.wishlist.items);
+    const { isFarmer } = useAuth();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const couponDiscount = 10;
@@ -303,6 +306,14 @@ const Navbar = () => {
                                 >
                                     Contact
                                 </NavLink>
+                                {isFarmer && (
+                                    <NavLink
+                                        to='/admin/products'
+                                        className={`block px-3 py-2 rounded-md text-base font-medium hover:text-[#4BAF47] hover:underline hover:underline-offset-4 duration-300 ${isActiveLink('/admin/products')}`}
+                                    >
+                                        Farmer Dashboard
+                                    </NavLink>
+                                )}
                             </div>
                         </div>
 
@@ -322,7 +333,7 @@ const Navbar = () => {
 
                         <div className="flex justify-between items-center w-full lg:hidden">
                             <Link to='/'>
-                                <img className=' w-28' src={siteLogo} alt="Logo" />
+                                <img className=' w-28' src={isScrolled ? logoLight : logoDark} alt="FarmStore" />
                             </Link>
                             <div>
                                 <div className="flex gap-5 items-center ">
@@ -392,6 +403,9 @@ const Navbar = () => {
                         </NavLink>
                         <NavLink to='/news' className={`block px-3 py-2 rounded-md text-base font-medium ${isActiveLink('/news')}`}>News</NavLink>
                         <NavLink to='/contact' className={`block px-3 py-2 rounded-md text-base font-medium ${isActiveLink('/contact')}`}>Contact</NavLink>
+                        {isFarmer && (
+                            <NavLink to='/admin/products' className={`block px-3 py-2 rounded-md text-base font-medium ${isActiveLink('/admin/products')}`}>Farmer Dashboard</NavLink>
+                        )}
                     </div>
 
 
@@ -712,6 +726,10 @@ const Navbar = () => {
                                 variant="contained"
                                 color="success"
                                 sx={{ mb: { xs: 2, sm: 0 }, width: { xs: '100%', sm: 'auto' } }}
+                                onClick={() => {
+                                    handleFavoriteModalClose();
+                                    navigate('/products');
+                                }}
                             >
                                 View Wishlist
                             </Button>
